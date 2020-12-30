@@ -1,0 +1,18 @@
+{
+    "name": "hCaptcha Support",
+    "description": "Add hCaptcha validation to signups to prevent spam and replace Google reCaptcha.",
+    "version": "1.0.0",
+    "mobileFriendly": true,
+    "icon": "hcaptcha.png",
+    "key": "hcaptcha",
+    "type": "addon",
+	"license": "MIT",
+	"documentationUrl" : "https://docs.hcaptcha.com/",
+    "authors": [
+        {
+            "name": "Loick Diroll",
+            "email": "loick.diroll@losk.fr",
+            "homepage": "http://losk.fr"
+        }
+    ]
+}
