@@ -6,9 +6,9 @@
     "icon": "hcaptcha.png",
     "key": "hcaptcha",
     "type": "addon",
-	"license": "MIT",
-	"gitHub": "unkorneglosk/hcaptcha",
-	"documentationUrl" : "https://docs.hcaptcha.com/",
+    "license": "MIT",
+    "gitHub": "unkorneglosk/hcaptcha",
+    "documentationUrl" : "https://docs.hcaptcha.com/",
     "authors": [
         {
             "name": "Loick Diroll",
