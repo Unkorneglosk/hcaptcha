@@ -17,13 +17,13 @@ class hCaptchaPlugin extends Gdn_Plugin {
      * hCaptcha private key
      * @var string
      */
-    protected $privateKey;
+    protected $secretKey;
 
     /**
      * hCaptcha public key
      * @var string
      */
-    protected $publicKey;
+    protected $siteKey;
 
     /**
      * Plugin initialization.
@@ -33,8 +33,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
         parent::__construct();
 
         // Get keys from config
-        $this->privateKey = c('hCaptcha.PrivateKey');
-        $this->publicKey = c('hCaptcha.PublicKey');
+        $this->secretKey = c('hCaptcha.SecretKey');
+        $this->siteKey = c('hCaptcha.SiteKey');
     }
 
     /**
@@ -42,8 +42,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
      *
      * @param string $key
      */
-    public function setPrivateKey($key) {
-        $this->privateKey = $key;
+    public function setSecretKey($key) {
+        $this->secretKey = $key;
     }
 
     /**
@@ -51,8 +51,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
      *
      * @return string
      */
-    public function getPrivateKey() {
-        return $this->privateKey;
+    public function getSecretKey() {
+        return $this->secretKey;
     }
 
     /**
@@ -60,8 +60,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
      *
      * @param string $key
      */
-    public function setPublicKey($key) {
-        $this->publicKey = $key;
+    public function setSiteKey($key) {
+        $this->siteKey = $key;
     }
 
     /**
@@ -69,8 +69,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
      *
      * @return string
      */
-    public function getPublicKey() {
-        return $this->publicKey;
+    public function getSiteKey() {
+        return $this->siteKey;
     }
 
     /**
@@ -83,7 +83,7 @@ class hCaptchaPlugin extends Gdn_Plugin {
     public function validateCaptcha($captchaText) {
         $api = new Garden\Http\HttpClient('https://hcaptcha.com');
         $data = [
-            'secret' => $this->getPrivateKey(),
+            'secret' => $this->getSecretKey(),
             'response' => $captchaText
         ];
         $response = $api->get('/siteverify', $data);
@@ -115,8 +115,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
         $sender->setData('_ManageCaptcha', $manageCaptcha);
 
         if ($manageCaptcha) {
-            $configurationModel->setField('hCaptcha.PrivateKey');
-            $configurationModel->setField('hCaptcha.PublicKey');
+            $configurationModel->setField('hCaptcha.SecretKey');
+            $configurationModel->setField('hCaptcha.SiteKey');
         }
     }
 
@@ -191,28 +191,35 @@ class hCaptchaPlugin extends Gdn_Plugin {
      * @return string
      */
     public function gdn_form_captcha_handler($sender) {
-        if (!$this->getPrivateKey() || !$this->getPublicKey()) {
+        if (!$this->getSecretKey() || !$this->getSiteKey()) {
             echo '<div class="Warning">' . t('hCaptcha has not been set up by the site administrator in registration settings. This is required to register.') .  '</div>';
         }
 
-		//Language whitelist based off https://docs.hcaptcha.com/languages docs
-        $whitelist = ['ar', 'af', 'am', 'hy', 'az', 'eu', 'bn', 'bg', 'ca', 'zh-HK', 'zh-CN', 'zh-TW', 'hr', 'cs', 'da', 'nl', 'eb-GB', 'en', 'et', 'fil', 'fi', 'fr', 'fr-CA', 'gl', 'ka', 'de', 'de-AT', 'de-CH', 'el', 'gu', 'iw', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'kn', 'ko', 'lo', 'lv', 'lt', 'ms', 'ml', 'mr', 'mn', 'no', 'fa', 'pl', 'pt', 'pt-BR', 'ro', 'ru', 'sr', 'si', 'sk', 'sl', 'es', 'es-149', 'sw', 'sv', 'ta', 'te', 'th', 'tr', 'uk', 'ur', 'vi', 'zu'];
+		// Build script source.
+        $scriptUrl = 'https://hcaptcha.com/1/api.js';
+        $scriptParams = [
+            'hl' => $language,
+           'render' => 'explicit'
+        ];
+        $scriptSource = $scriptUrl . '?' . http_build_query($scriptParams);
 
-        // Use our current locale against the whitelist.
-        $language = Gdn::locale()->language();
-        if (!in_array($language, $whitelist)) {
-            $language = (in_array(Gdn::locale()->Locale, $whitelist)) ? Gdn::locale()->Locale : false;
-        }
-
-        $scriptSrc = 'https://hcaptcha.com/1/api.js?hl='.$language;
-
-        $attributes = ['class' => 'h-captcha', 'data-sitekey' => $this->getPublicKey(), 'data-theme' => c('hCaptcha.Theme', 'light')];
-
+        $attributes = [
+            'class' => 'h-captcha',
+            'id' => 'hCaptchaContainer',
+            'data-sitekey' => $this->getSiteKey(),
+            'data-theme' => Gdn::config('hCaptcha.Theme', 'light')
+        ];
         $this->EventArguments['Attributes'] = &$attributes;
         $this->fireEvent('BeforeCaptcha');
 
-        echo '<div '. attribute($attributes) . '></div>';
-        echo '<script src="'.$scriptSrc.'"></script>';
+        echo '<div '.attribute($attributes).'></div>',
+            '<script>
+                var hCaptchaHelper = function() {
+                    var widgetID = hcaptcha.render("hCaptchaContainer");
+                };
+            </script>',
+            '<script src="'.$scriptSource.'"></script>',
+            '<script>$(function(){ hCaptchaHelper(); });</script>';
     }
 
     /**

@@ -10,12 +10,12 @@
             </thead>
             <tbody>
             <tr>
-                <th><?php echo t('Public Key'); ?></th>
-                <td class="Alt"><?php echo $this->Form->textBox('hCaptcha.PublicKey'); ?></td>
+                <th><?php echo t('Site Key'); ?></th>
+                <td class="Alt"><?php echo $this->Form->textBox('hCaptcha.SiteKey'); ?></td>
             </tr>
             <tr>
-                <th><?php echo t('Private Key'); ?></th>
-                <td class="Alt"><?php echo $this->Form->textBox('hCaptcha.PrivateKey'); ?></td>
+                <th><?php echo t('Secret Key'); ?></th>
+                <td class="Alt"><?php echo $this->Form->textBox('hCaptcha.SecretKey'); ?></td>
             </tr>
             </tbody>
         </table>
