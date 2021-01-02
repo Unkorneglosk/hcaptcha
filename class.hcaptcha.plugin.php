@@ -195,6 +195,15 @@ class hCaptchaPlugin extends Gdn_Plugin {
             echo '<div class="Warning">' . t('hCaptcha has not been set up by the site administrator in registration settings. This is required to register.') .  '</div>';
         }
 
+        //Language whitelist based off https://docs.hcaptcha.com/languages docs
+        $whitelist = ['ar', 'af', 'am', 'hy', 'az', 'eu', 'bn', 'bg', 'ca', 'zh-HK', 'zh-CN', 'zh-TW', 'hr', 'cs', 'da', 'nl', 'eb-GB', 'en', 'et', 'fil', 'fi', 'fr', 'fr-CA', 'gl', 'ka', 'de', 'de-AT', 'de-CH', 'el', 'gu', 'iw', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'kn', 'ko', 'lo', 'lv', 'lt', 'ms', 'ml', 'mr', 'mn', 'no', 'fa', 'pl', 'pt', 'pt-BR', 'ro', 'ru', 'sr', 'si', 'sk', 'sl', 'es', 'es-149', 'sw', 'sv', 'ta', 'te', 'th', 'tr', 'uk', 'ur', 'vi', 'zu'];
+
+        // Use our current locale against the whitelist.
+        $language = Gdn::locale()->language();
+        if (!in_array($language, $whitelist)) {
+            $language = (in_array(Gdn::locale()->Locale, $whitelist)) ? Gdn::locale()->Locale : false;
+        }
+        
 		// Build script source.
         $scriptUrl = 'https://hcaptcha.com/1/api.js';
         $scriptParams = [
