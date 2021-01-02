@@ -8,6 +8,11 @@ hCaptcha integration for Vanilla Forums
 * Enable the plugin from your forum dashboard after clearing the cache
 * Setup your hcpatcha keys in the registration settings
 
+## Update from 1.0.0 to 1.1.0
+You will have to set your keys again on the registration settings page. 
+Naming scheme has been changed to match the hCaptcha one. 
+PublicKey became SiteKey and PrivateKey became SecretKey.
+
 ## Requirements
 * A Vanilla forum installation accessible from the web
 * An account on https://hcaptcha.com 
