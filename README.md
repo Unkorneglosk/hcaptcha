@@ -13,6 +13,9 @@ You will have to set your keys again on the registration settings page.
 Naming scheme has been changed to match the hCaptcha one. 
 PublicKey became SiteKey and PrivateKey became SecretKey.
 
+## Localization 
+You can localize the hCaptcha plugin. Duplicate locale/fr.php and change the filename according to your locale tag, and edit the definitions to suit your needs. 
+
 ## Requirements
 * A Vanilla forum installation accessible from the web
 * An account on https://hcaptcha.com 
