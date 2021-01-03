@@ -14,13 +14,13 @@
 class hCaptchaPlugin extends Gdn_Plugin {
 
     /**
-     * hCaptcha private key
+     * hCaptcha secret key
      * @var string
      */
     protected $secretKey;
 
     /**
-     * hCaptcha public key
+     * hCaptcha site key
      * @var string
      */
     protected $siteKey;
@@ -117,6 +117,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
         if ($manageCaptcha) {
             $configurationModel->setField('hCaptcha.SecretKey');
             $configurationModel->setField('hCaptcha.SiteKey');
+            $configurationModel->setField('hCaptcha.Theme');
+            $configurationModel->setField('hCaptcha.Size');
         }
     }
 
@@ -216,7 +218,8 @@ class hCaptchaPlugin extends Gdn_Plugin {
             'class' => 'h-captcha',
             'id' => 'hCaptchaContainer',
             'data-sitekey' => $this->getSiteKey(),
-            'data-theme' => Gdn::config('hCaptcha.Theme', 'light')
+            'data-theme' => Gdn::config('hCaptcha.Theme', 'light'),
+			'data-size' => Gdn::config('hCaptcha.Size', 'normal'),
         ];
         $this->EventArguments['Attributes'] = &$attributes;
         $this->fireEvent('BeforeCaptcha');
