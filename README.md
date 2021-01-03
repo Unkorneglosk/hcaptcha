@@ -1,4 +1,5 @@
 <img src="https://assets-global.website-files.com/5c73e7ea3f8bb2a85d2781db/5c73e7ea3f8bb23b4c278261_hcaptcha-logo-landscape.svg" alt="Vanilla Repo Logo" width=500/>
+
 [hCaptcha](https://hcaptcha.com) integration for [Vanilla Forums](https://github.com/vanilla/vanilla/)
 
 ## Installation
