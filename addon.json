@@ -1,7 +1,7 @@
 {
     "name": "hCaptcha Support",
     "description": "Add hCaptcha validation to signups to prevent spam and replace Google reCaptcha.",
-    "version": "1.2.1b1",
+    "version": "1.2.1",
     "mobileFriendly": true,
     "icon": "hcaptcha.png",
     "key": "hcaptcha",
