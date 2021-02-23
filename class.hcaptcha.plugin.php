@@ -231,7 +231,7 @@ class hCaptchaPlugin extends Gdn_Plugin {
                 };
             </script>',
             '<script src="'.$scriptSource.'"></script>',
-            '<script>$(function(){ hCaptchaHelper(); });</script>';
+            '<script>(function($) { hCaptchaHelper(); }(window.jQuery));</script>';
     }
 
     /**
